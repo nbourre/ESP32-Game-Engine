@@ -1,6 +1,10 @@
 #include "SceneManager.h"
 
-SceneManager::SceneManager() {}
+SceneManager::SceneManager() {
+    for (int i = 0; i < MAX_SCENES; i++) {
+        sceneStack[i] = nullptr;  // Initialize empty stack
+    }
+}
 
 void SceneManager::setCurrentScene(Scene* newScene) {
     sceneCount = 0;  // Clear previous scenes

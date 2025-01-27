@@ -1,7 +1,8 @@
 #pragma once
+#include <ArduinoQueue.h>
 #include "Entity.h"
 
-#define MAX_ENTITIES 50  // Adjust based on needs
+#define MAX_ENTITIES 10  // Adjustable max entities per scene
 
 class Scene {
 public:
@@ -15,6 +16,5 @@ public:
     void removeEntity(Entity* entity);
 
 protected:
-    Entity* entities[MAX_ENTITIES] = {nullptr};  // Fixed-size array
-    int entityCount = 0;
+    ArduinoQueue<Entity*> entities;  // Safe preallocated queue
 };

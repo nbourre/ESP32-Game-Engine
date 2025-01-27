@@ -1,37 +1,34 @@
 #include "Scene.h"
 
 void Scene::update(unsigned long deltaTime) {
-    for (int i = 0; i < entityCount; i++) {
-        if (entities[i]) {
-            entities[i]->update(deltaTime);
-        }
+    int count = entities.itemCount();
+    for (int i = 0; i < count; i++) {
+        Entity* entity = entities.dequeue();  // Get entity from queue
+        entity->update(deltaTime);
+        entities.enqueue(entity);  // Re-add entity to maintain order
     }
 }
 
 void Scene::draw(Renderer& renderer) {
-    for (int i = 0; i < entityCount; i++) {
-        if (entities[i]) {
-            entities[i]->draw(renderer);
-        }
+    int count = entities.itemCount();
+    for (int i = 0; i < count; i++) {
+        Entity* entity = entities.dequeue();  // Get entity from queue
+        entity->draw(renderer);
+        entities.enqueue(entity);  // Re-add entity to maintain order
     }
 }
 
 void Scene::addEntity(Entity* entity) {
-    if (entityCount < MAX_ENTITIES) {
-        entities[entityCount++] = entity;
-    }
+    entities.enqueue(entity);
 }
 
 void Scene::removeEntity(Entity* entity) {
-    for (int i = 0; i < entityCount; i++) {
-        if (entities[i] == entity) {
-            entities[i] = nullptr;
-            // Shift remaining entities left
-            for (int j = i; j < entityCount - 1; j++) {
-                entities[j] = entities[j + 1];
-            }
-            entityCount--;
-            return;
+    ArduinoQueue<Entity*> tempQueue; 
+    while (!entities.isEmpty()) {
+        Entity* e = entities.dequeue();
+        if (e != entity) {
+            tempQueue.enqueue(e);  // Keep all except the one to remove
         }
     }
+    entities = tempQueue;
 }

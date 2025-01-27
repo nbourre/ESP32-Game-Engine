@@ -11,6 +11,8 @@ public:
     void init();
     void update();
     void draw();
+
+    unsigned long getDeltaTime() const { return deltaTime; }
     
     // Scene management via SceneManager
     void setScene(Scene* newScene);
@@ -21,4 +23,5 @@ private:
     Renderer renderer;
     InputManager inputManager;
     unsigned long previousMillis;
+    unsigned long deltaTime;
 };

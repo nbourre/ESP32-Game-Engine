@@ -1,5 +1,6 @@
 #pragma once
 #include <U8g2lib.h>
+#include <SafeString.h>
 
 class Renderer {
 public:
@@ -9,6 +10,7 @@ public:
     void endFrame();
     
     void drawText(int x, int y, const char* str);
+    void drawTextSafe(int x, int y, const char* format, ...);
     void drawCircle(int x, int y, int radius);
     void drawRectangle(int x, int y, int width, int height);
     void drawFilledRectangle(int x, int y, int width, int height);

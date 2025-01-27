@@ -11,7 +11,7 @@ void EDGE::init() {
 
 void EDGE::update() {
     unsigned long currentMillis = millis();
-    unsigned long deltaTime = currentMillis - previousMillis;
+    deltaTime = currentMillis - previousMillis;
     previousMillis = currentMillis;
 
     inputManager.update(deltaTime);

@@ -1,4 +1,6 @@
 #include "Renderer.h"
+#include <SafeString.h>
+#include <stdarg.h>  // Required for variadic functions
 
 #define I2C_SDA 5
 #define I2C_SCL 6
@@ -21,6 +23,18 @@ void Renderer::endFrame() {
 
 void Renderer::drawText(int x, int y, const char* str) {
     u8g2.drawStr(xOffset + x, yOffset + y, str);
+}
+
+void Renderer::drawTextSafe(int x, int y, const char* format, ...) {
+    createSafeString(displayText, 32);  // Define SafeString with a 32-char limit
+
+    va_list args;
+    va_start(args, format);
+    char buffer[32];  // Temporary buffer for formatting
+    vsnprintf(buffer, sizeof(buffer), format, args);  // Format text safely
+    va_end(args);
+
+    u8g2.drawStr(x, y, displayText.c_str()); 
 }
 
 void Renderer::drawCircle(int x, int y, int radius) {

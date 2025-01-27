@@ -10,7 +10,7 @@ Renderer::Renderer() : u8g2(U8G2_R0, U8X8_PIN_NONE, I2C_SCL, I2C_SDA) {}
 void Renderer::init() {
     u8g2.begin();
     u8g2.setContrast(255);
-    u8g2.setFont(u8g2_font_ncenB10_tr);  // Set a default font
+    u8g2.setFont(u8g2_font_5x7_tf);  // Set a default font
 }
 
 void Renderer::beginFrame() {
@@ -34,7 +34,9 @@ void Renderer::drawTextSafe(int x, int y, const char* format, ...) {
     vsnprintf(buffer, sizeof(buffer), format, args);  // Format text safely
     va_end(args);
 
-    u8g2.drawStr(x, y, displayText.c_str()); 
+    displayText = buffer;  // Assign formatted text to SafeString
+
+    u8g2.drawStr(xOffset + x, yOffset + y, displayText.c_str());
 }
 
 void Renderer::drawCircle(int x, int y, int radius) {
@@ -51,4 +53,8 @@ void Renderer::drawFilledRectangle(int x, int y, int width, int height) {
 
 void Renderer::drawLine(int x1, int y1, int x2, int y2) {
     u8g2.drawLine(xOffset + x1, yOffset + y1, xOffset + x2, yOffset + y2);
+}
+
+void Renderer::setFont(const uint8_t* font) {
+    u8g2.setFont(font);
 }

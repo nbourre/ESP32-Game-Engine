@@ -18,13 +18,7 @@ void BouncingBallScene::update(unsigned long deltaTime) {
 void BouncingBallScene::draw(Renderer& renderer) {
     Scene::draw(renderer);
 
-    // ✅ Safe formatted text example (FPS counter)
     createSafeString(fpsText, 32);
-    fpsText.printf("FPS: %d", 1000 / engine.getDeltaTime());
-    renderer.drawTextSafe(5, 10, fpsText.c_str());
-
-    // ✅ Safe dynamic string rendering
-    createSafeString(scoreText, 32);
-    scoreText = "Score: 100";
-    renderer.drawTextSafe(5, 25, scoreText.c_str());
+    fpsText.printf("FPS:%d", 1000 / engine.getDeltaTime());
+    renderer.drawTextSafe(35, 35, fpsText.c_str());
 }

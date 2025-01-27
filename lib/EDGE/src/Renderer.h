@@ -35,6 +35,9 @@ public:
         u8g2.setContrast(level);
     }
 
+    void setFont(const uint8_t* font);
+
+
 
 private:
     U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2;

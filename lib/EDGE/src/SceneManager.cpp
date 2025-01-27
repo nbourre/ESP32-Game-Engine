@@ -1,29 +1,41 @@
 #include "SceneManager.h"
 
-SceneManager::SceneManager() : currentScene(nullptr) {}
+SceneManager::SceneManager() {}
 
 void SceneManager::setCurrentScene(Scene* newScene) {
-    if (currentScene) {
-        currentScene->exit();
+    sceneCount = 0;  // Clear previous scenes
+    sceneStack[sceneCount++] = newScene;
+    newScene->init();
+}
+
+void SceneManager::pushScene(Scene* newScene) {
+    if (sceneCount < MAX_SCENES) {
+        sceneStack[sceneCount++] = newScene;
+        newScene->init();
     }
-    currentScene = newScene;
-    if (currentScene) {
-        currentScene->init();
+}
+
+void SceneManager::popScene() {
+    if (sceneCount > 0) {
+        sceneCount--;  // Remove top scene
     }
 }
 
 void SceneManager::update(unsigned long dt) {
-    if (currentScene) {
-        currentScene->update(dt);
+    if (sceneCount > 0) {
+        sceneStack[sceneCount - 1]->update(dt);  // Only update top scene
     }
 }
 
 void SceneManager::draw(Renderer& renderer) {
-    if (currentScene) {
-        currentScene->draw();
+    for (int i = 0; i < sceneCount; i++) {
+        sceneStack[i]->draw(renderer);  // Draw all stacked scenes
     }
 }
 
 Scene* SceneManager::getCurrentScene() const {
-    return currentScene;
+    if (sceneCount > 0) {
+        return sceneStack[sceneCount - 1];
+    }
+    return nullptr;
 }

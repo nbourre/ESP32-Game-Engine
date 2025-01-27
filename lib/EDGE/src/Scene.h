@@ -1,18 +1,20 @@
 #pragma once
+#include "Entity.h"
+
+#define MAX_ENTITIES 50  // Adjust based on needs
 
 class Scene {
 public:
     virtual ~Scene() {}
 
-    // Called once when the scene is set
     virtual void init() {}
+    virtual void update(unsigned long deltaTime);
+    virtual void draw(Renderer& renderer);
 
-    // Called in every update cycle with time elapsed in ms
-    virtual void update(unsigned long deltaTime) = 0;
+    void addEntity(Entity* entity);
+    void removeEntity(Entity* entity);
 
-    // Called every frame to render the scene
-    virtual void draw() = 0;
-
-    // Called before switching away from the scene (if needed)
-    virtual void exit() {}
+protected:
+    Entity* entities[MAX_ENTITIES] = {nullptr};  // Fixed-size array
+    int entityCount = 0;
 };

@@ -4,7 +4,7 @@
         {
             "label": "Git Push and Copy to Arduino",
             "type": "shell",
-            "command": "git push && call \"%cd%\\copy_project.bat\"",
+            "command": "git push; powershell.exe -ExecutionPolicy Bypass -File '${workspaceFolder}/copy_project.ps1'",
             "problemMatcher": [],
             "group": {
                 "kind": "build",

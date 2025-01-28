@@ -1,0 +1,15 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Git Push and Copy to Arduino",
+            "type": "shell",
+            "command": "git push && call \"%cd%\\copy_project.bat\"",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

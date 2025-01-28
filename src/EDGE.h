@@ -16,6 +16,8 @@ public:
     
     // Scene management via SceneManager
     void setScene(Scene* newScene);
+    
+    void setRenderer(Renderer& newRenderer) { renderer = newRenderer; }
     Renderer& getRenderer();
     InputManager& getInputManager() { return inputManager; }
 

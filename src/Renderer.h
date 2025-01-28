@@ -8,9 +8,10 @@
 class Renderer {
 public:
     Renderer(): u8g2(U8G2_R0, U8X8_PIN_NONE, I2C_SCL, I2C_SDA) {}
-    Renderer(int resetPin, int sdaPin, int sclPin) : u8g2(U8G2_R0, resetPin, sdaPin, sclPin) {}
 
-    Renderer(uint8_t address, int resetPin, int sdaPin, int sclPin) : u8g2(U8G2_R0, resetPin, sdaPin, sclPin) {
+    Renderer(int sclPin, int sdaPin, int resetPin) : u8g2(U8G2_R0, sclPin, sdaPin,  resetPin) {}
+
+    Renderer(uint8_t address, int sclPin, int sdaPin, int resetPin) : u8g2(U8G2_R0, sclPin, sdaPin,  resetPin) {
         u8g2.setI2CAddress(address);
     }
 
@@ -50,14 +51,16 @@ public:
     }
 
     void setFont(const uint8_t* font);
-
+    
+    // Return the underlying U8G2 object
+    U8G2 getU8G2() { return u8g2; }
 
 
 private:
     U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2;
 
     // Default values for SSD1306 128x64 display
-    int displayBufferWidth = 132;
+    int displayBufferWidth = 128;
     int displayBufferHeight = 64;
 
     // Default values for OLED 0.42" display

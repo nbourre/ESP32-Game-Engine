@@ -2,12 +2,26 @@
 #include <U8g2lib.h>
 #include <SafeString.h>
 
+#define I2C_SDA 5 // Compatible with ESP32-C3 with OLED
+#define I2C_SCL 6 // Compatible with ESP32-C3 with OLED
+
 class Renderer {
 public:
-    Renderer();
+    Renderer(): u8g2(U8G2_R0, U8X8_PIN_NONE, I2C_SCL, I2C_SDA) {}
+    Renderer(int resetPin, int sdaPin, int sclPin) : u8g2(U8G2_R0, resetPin, sdaPin, sclPin) {}
+
+    Renderer(uint8_t address, int resetPin, int sdaPin, int sclPin) : u8g2(U8G2_R0, resetPin, sdaPin, sclPin) {
+        u8g2.setI2CAddress(address);
+    }
+
+    void setI2CAddress(uint8_t address) {
+        u8g2.setI2CAddress(address);
+    }
+
     void init();
     void beginFrame();
     void endFrame();
+    
     
     void drawText(int x, int y, const char* str);
     void drawTextSafe(int x, int y, const char* format, ...);

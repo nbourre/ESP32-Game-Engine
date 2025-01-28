@@ -2,11 +2,6 @@
 #include <SafeString.h>
 #include <stdarg.h>  // Required for variadic functions
 
-#define I2C_SDA 5
-#define I2C_SCL 6
-
-Renderer::Renderer() : u8g2(U8G2_R0, U8X8_PIN_NONE, I2C_SCL, I2C_SDA) {}
-
 void Renderer::init() {
     u8g2.begin();
     u8g2.setContrast(255);

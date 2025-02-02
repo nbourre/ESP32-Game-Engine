@@ -37,6 +37,8 @@ Things can break at any update.
 
 **EDGE** is a lightweight, **entity-based game engine** designed for **embedded devices** with **small displays**. It features **scene management**, **entity handling**, and is **hardware-agnostic**, working with **any U8g2-compatible display**.
 
+https://github.com/user-attachments/assets/466554af-29f4-4d50-976b-3db33ba87524
+
 ---
 
 ## Features

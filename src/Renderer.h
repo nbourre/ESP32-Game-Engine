@@ -3,6 +3,9 @@
 #include "DisplayConfig.h"
 #include <SafeString.h>
 
+#define I2C_SDA 5 // Compatible with ESP32-C3 with OLED
+#define I2C_SCL 6 // Compatible with ESP32-C3 with OLED
+
 class Renderer {
 public:
     Renderer(const DisplayConfig& config);
@@ -12,6 +15,7 @@ public:
 
     // Return a pointer to the U8G2 object
     U8G2* getU8G2() { return u8g2; }
+    
     
     void drawText(int x, int y, const char* str);
     void drawTextSafe(int x, int y, const char* format, ...);

@@ -2,10 +2,12 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "InputManager.h"
+#include "DisplayConfig.h"
+
 
 class EDGE {
 public:
-    EDGE();
+    EDGE(const DisplayConfig& config);
     ~EDGE();
 
     void init();

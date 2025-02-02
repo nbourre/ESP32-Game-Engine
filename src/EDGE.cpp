@@ -1,6 +1,9 @@
 #include "EDGE.h"
 
-EDGE::EDGE() : previousMillis(0) {}
+EDGE::EDGE(const DisplayConfig& config) : renderer(config) {
+    previousMillis = 0;
+    deltaTime = 0;
+}
 
 EDGE::~EDGE() {}
 

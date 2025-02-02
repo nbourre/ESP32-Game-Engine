@@ -1,13 +1,41 @@
+# THIS IS A WORK IN PROGRESS!!! <!-- omit in toc -->
+
+Things can break at any update.
+
+---
+
+# Table of content <!-- omit in toc -->
+
+- [The ESP Device Game Engine (EDGE)](#the-esp-device-game-engine-edge)
+  - [Features](#features)
+  - [How It Works](#how-it-works)
+    - [Scenes](#scenes)
+    - [Entities](#entities)
+    - [Renderer \& DisplayConfig](#renderer--displayconfig)
+  - [Project Structure](#project-structure)
+  - [Setup \& Installation](#setup--installation)
+    - [Hardware Requirements](#hardware-requirements)
+    - [Library Dependencies](#library-dependencies)
+    - [Include EDGE in Your Project](#include-edge-in-your-project)
+  - [Usage](#usage)
+    - [Initializing the Engine](#initializing-the-engine)
+    - [Customizing DisplayConfig](#customizing-displayconfig)
+    - [Creating a Scene](#creating-a-scene)
+    - [Customizing the Renderer](#customizing-the-renderer)
+    - [Example Projects](#example-projects)
+  - [Customization Guide](#customization-guide)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [Credits](#credits)
+- [Troubleshooting](#troubleshooting)
+  - [No Serial Output](#no-serial-output)
+
+
+---
+
 # The ESP Device Game Engine (EDGE)
 
-**EDGE** is a lightweight, **entity-based game engine** designed for **embedded devices** with **small displays**.  
-It features **scene management**, **entity handling**, and is **hardware-agnostic**, working with **any U8g2-compatible display**.
-
-
-
-https://github.com/user-attachments/assets/466554af-29f4-4d50-976b-3db33ba87524
-
-
+**EDGE** is a lightweight, **entity-based game engine** designed for **embedded devices** with **small displays**. It features **scene management**, **entity handling**, and is **hardware-agnostic**, working with **any U8g2-compatible display**.
 
 ---
 
@@ -17,6 +45,7 @@ https://github.com/user-attachments/assets/466554af-29f4-4d50-976b-3db33ba87524
 - **Customizable renderer & input system** (supporting different devices).
 - **Optimized for embedded systems** (memory-efficient, no heap fragmentation).
 - **Supports any device with a U8g2-compatible display**.
+- **Auto-adjusting display offsets** based on screen size.
 
 ---
 
@@ -32,22 +61,27 @@ EDGE is built around **scenes** and **entities**:
 - Each **entity** is an object in the game (player, enemy, particle, etc.).
 - Entities **update every frame** and **draw themselves**.
 
+### Renderer & DisplayConfig
+- The **Renderer** handles all drawing operations with `U8g2`.
+- Display offsets (`xOffset`, `yOffset`) are automatically calculated based on screen dimensions defined in `DisplayConfig`.
+
 ---
 
 ## Project Structure
 ```
 EDGE/
-│── src/
-│   ├── EDGE.h / EDGE.cpp        # Core engine logic
-│   ├── Scene.h / Scene.cpp      # Scene management
+├── src/
+│   ├── EDGE.h / EDGE.cpp              # Core engine logic
+│   ├── Scene.h / Scene.cpp            # Scene management
 │   ├── SceneManager.h / SceneManager.cpp  # Handles multiple scenes
-│   ├── Renderer.h / Renderer.cpp # U8g2-based graphics rendering
+│   ├── Renderer.h / Renderer.cpp      # U8g2-based graphics rendering
 │   ├── InputManager.h / InputManager.cpp  # Button/input handling
-│── examples/
-│   ├── BouncingBallScene/        # Example: Simple physics
-│   ├── FlappyBirdScene/          # Example: Game using physics + input
-│── README.md                     # Documentation
-│── platformio.ini                 # PlatformIO project configuration
+│   ├── DisplayConfig.h                # Configuration for display settings
+├── examples/
+│   ├── BouncingBallScene/             # Example: Simple physics
+│   ├── FlappyBirdScene/               # Example: Game using physics + input
+├── README.md                          # Documentation
+├── platformio.ini                     # PlatformIO project configuration
 ```
 
 ---
@@ -66,7 +100,7 @@ pio lib install "U8g2" "ArduinoQueue" "SafeString" "OneButton"
 ```
 
 ### Include EDGE in Your Project
-In **PlatformIO**, add:
+In **PlatformIO** or Arduino IDE:
 ```cpp
 #include "EDGE.h"
 ```
@@ -76,12 +110,18 @@ In **PlatformIO**, add:
 ## Usage
 
 ### Initializing the Engine
-Create an instance of `EDGE` and set the first scene:
+Create an instance of `EDGE` with `DisplayConfig` and set the first scene:
 ```cpp
 #include "EDGE.h"
 #include "MyGameScene.h"
 
-EDGE engine;
+#define I2C_SDA 5
+#define I2C_SCL 6
+#define SCREEN_WIDTH 72
+#define SCREEN_HEIGHT 40
+
+DisplayConfig config(SSD1306, I2C_SCL, I2C_SDA, U8X8_PIN_NONE, U8G2_R0, SCREEN_WIDTH, SCREEN_HEIGHT, true);
+EDGE engine(config);
 MyGameScene gameScene;
 
 void setup() {
@@ -95,12 +135,24 @@ void loop() {
 }
 ```
 
----
+### Customizing DisplayConfig
+You can customize the display configuration if your display has different default dimensions:
+```cpp
+#define I2C_SDA 4
+#define I2C_SCL 15
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+
+DisplayConfig config(SSD1306, I2C_SCL, I2C_SDA, U8X8_PIN_NONE, U8G2_R0, SCREEN_WIDTH, SCREEN_HEIGHT, true);
+EDGE engine(config);
+```
+
+If you have a display with a resolution different from 128x64, you can adjust the `DEFAULT_DISPLAY_WIDTH` and `DEFAULT_DISPLAY_HEIGHT` in `DisplayConfig.h`.
+
+This flexibility allows EDGE to work seamlessly with various display modules.
 
 ### Creating a Scene
-A **scene** manages all game objects.
-
-**Example: `MyGameScene.h`**
+A **scene** manages all game objects:
 ```cpp
 #pragma once
 #include "Scene.h"
@@ -113,7 +165,7 @@ public:
 };
 ```
 
-**Example: `MyGameScene.cpp`**
+**Scene Implementation:**
 ```cpp
 #include "MyGameScene.h"
 #include "EDGE.h"
@@ -133,136 +185,27 @@ void MyGameScene::draw(Renderer& renderer) {
 }
 ```
 
----
-
-### Creating an Entity
-Entities **move, interact, and render themselves**.
-
-**Example: `Player.h`**
-```cpp
-#pragma once
-#include "Entity.h"
-
-class Player : public Entity {
-public:
-    Player();
-    void update(unsigned long deltaTime) override;
-    void draw(Renderer& renderer) override;
-
-private:
-    float x, y, velocity;
-};
-```
-
-**Example: `Player.cpp`**
-```cpp
-#include "Player.h"
-
-Player::Player() : x(10), y(20), velocity(0) {}
-
-void Player::update(unsigned long deltaTime) {
-    velocity += 0.1;  // Gravity effect
-    y += velocity;
-}
-
-void Player::draw(Renderer& renderer) {
-    renderer.drawCircle(x, y, 3);
-}
-```
-
----
-
 ### Customizing the Renderer
-The **renderer** is hardware-agnostic. Modify it to support **any U8g2-compatible display**.
+The `Renderer` is generalized to support different displays. Offsets are automatically calculated based on the display size from `DisplayConfig`.
 
-**Example: `Renderer.h`**
 ```cpp
-#pragma once
-#include <U8g2lib.h>
-
-class Renderer {
-public:
-    Renderer();
-    void init();
-    void drawText(int x, int y, const char* str);
-    void drawCircle(int x, int y, int radius);
-    void setFont(const uint8_t* font);
-};
-```
-
-**Example: `Renderer.cpp`**
-```cpp
-#include "Renderer.h"
-
-Renderer::Renderer() : u8g2(U8G2_R0, U8X8_PIN_NONE, 6, 5) {}
-
-void Renderer::init() {
-    u8g2.begin();
-    u8g2.setFont(u8g2_font_6x10_tf);
-}
-
-void Renderer::drawText(int x, int y, const char* str) {
-    u8g2.drawStr(x, y, str);
-}
-
-void Renderer::drawCircle(int x, int y, int radius) {
-    u8g2.drawDisc(x, y, radius);
+Renderer::Renderer(const DisplayConfig& config) : config(config) {
+    u8g2 = new U8G2_SSD1306_128X64_NONAME_F_HW_I2C(config.rotation, U8X8_PIN_NONE, config.clockPin, config.dataPin);
+    xOffset = config.xOffset;
+    yOffset = config.yOffset;
 }
 ```
 
----
-
-### Customizing Input Handling
-Modify **InputManager** to work with **any device**.
-
-**Example: `InputManager.h`**
-```cpp
-#pragma once
-#include <OneButton.h>
-
-#define BUTTON_PIN 9  // Change if needed
-
-class InputManager {
-public:
-    InputManager();
-    void init();
-    bool isButtonPressed();
-};
-```
-
-**Example: `InputManager.cpp`**
-```cpp
-#include "InputManager.h"
-
-OneButton button(BUTTON_PIN, true);
-
-InputManager::InputManager() {}
-
-void InputManager::init() {
-    button.attachClick([]() {
-        // Handle button click
-    });
-}
-
-bool InputManager::isButtonPressed() {
-    button.tick();
-    return button.isPressed();
-}
-```
-
----
-
-## Example Projects
+### Example Projects
 - **Bouncing Ball** (Basic physics test)
 - **Flappy Bird** (Button-controlled physics)
-- **Tetris (Coming soon)**
 
 ---
 
 ## Customization Guide
-- **Want to use a different screen?** Modify `Renderer.cpp` to suit your display.
-- **Need different controls?** Change `InputManager.cpp` to work with your buttons.
-- **Adding new scenes?** Extend `Scene` and implement `update()` and `draw()`.
+- **Different Screens?** Modify `DisplayConfig` for your screen dimensions.
+- **Different Controls?** Customize `InputManager.cpp`.
+- **New Scenes?** Extend `Scene` and implement `update()` and `draw()`.
 
 ---
 
@@ -280,3 +223,11 @@ EDGE is **open-source** under the **MIT License**.
 
 ## Credits
 Developed by **Nicolas Bourré** as a modular **game engine for embedded systems**.
+
+---
+
+# Troubleshooting
+
+## No Serial Output
+On some ESP32 boards, enable **USB CDC On Boot** in the Arduino IDE settings to get Serial output working.
+

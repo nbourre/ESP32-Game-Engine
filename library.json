@@ -2,7 +2,7 @@
     "name": "EDGE",
     "description": "EDGE (ESP Device Game Engine) : A lightweight game engine for ESP devices using U8G2 graphics library. Might work on other devices compatible with U8G2 library.",
     "keywords": ["esp32", "game engine", "u8g2", "graphics", "game", "engine"],
-    "version": "0.1.0",
+    "version": "0.2.0",
     "authors": [
       {
         "name": "Nick B",

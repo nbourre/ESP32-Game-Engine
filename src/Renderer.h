@@ -3,8 +3,7 @@
 #include "DisplayConfig.h"
 #include <SafeString.h>
 
-#define I2C_SDA 5 // Compatible with ESP32-C3 with OLED
-#define I2C_SCL 6 // Compatible with ESP32-C3 with OLED
+
 
 class Renderer {
 public:

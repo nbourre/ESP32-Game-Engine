@@ -94,6 +94,7 @@ EDGE/
 - **ESP32/ESP8266/Arduino** (or any microcontroller with `U8g2` support).
 - **Display:** SSD1306 OLED, SH1106, or other `U8g2`-compatible screens.
 - **Buttons/Input Device** (can be GPIO buttons or a custom controller).
+  - Note: the switch should pull the pin to ground on a button press. Pin 9 by default.
 
 ### Library Dependencies
 Ensure you have the following libraries installed:
@@ -106,6 +107,44 @@ In **PlatformIO** or Arduino IDE:
 ```cpp
 #include "EDGE.h"
 ```
+
+### Install as a Library
+#### Arduino IDE
+Git clone EDGE into the Arduino library directory
+```sh
+cd ~/Arduino/libraries
+git clone http://https://github.com/nbourre/ESP32-Game-Engine
+```
+
+#### PlatformIO
+Create a new project and git clone EDGE in the probject library 
+directory.
+```sh
+cd ~/Documents/PlatformIO/Projects/<project name>/lib
+git clone http://https://github.com/nbourre/ESP32-Game-Engine
+```
+
+### Run an Example
+After setting up EDGE as a library, copy the example code.
+
+#### Arduino IDE
+Copy the example code to a new sketch:
+```sh
+cd ~/Arduino
+cp -r libraries/ESP32-Game-Engine/examples/BouncingBall .
+```
+Open the BouncingBall sketch.
+
+#### PlatformIO
+- Copy the example code into the src directory of the project:
+```sh
+cd ~/Documents/PlatformIO/Projects/<project name>
+cp lib/ESP32-Game-Engine/examples/BouncingBall/* src
+```
+- Remove the main.cpp file
+- Configure the project:
+  - Set the platform and board
+  - Add the 4 libraries
 
 ---
 

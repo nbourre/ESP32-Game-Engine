@@ -1,8 +1,9 @@
+#include <Arduino.h>
 #include "EDGE.h"
 #include "BouncingBallScene.h"
 
-#define I2C_SDA 5
-#define I2C_SCL 6
+#define I2C_SDA SDA
+#define I2C_SCL SCL
 #define SCREEN_WIDTH 72
 #define SCREEN_HEIGHT 40
 

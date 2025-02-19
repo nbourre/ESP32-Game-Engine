@@ -21,3 +21,7 @@ void InputManager::update(unsigned long dt) {
 bool InputManager::isButtonPressed() {
     return buttonState;
 }
+
+bool InputManager::isButtonDown() {
+    return lastButtonState;
+}

@@ -8,6 +8,7 @@ public:
     void init();
     void update(unsigned long dt);
     bool isButtonPressed();
+    bool isButtonDown();
 
 private:
     bool buttonState;

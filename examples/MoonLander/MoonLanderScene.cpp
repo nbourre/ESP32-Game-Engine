@@ -24,36 +24,27 @@ void MoonLanderScene::init() {
     success = false;                    // Not landed yet
     fire = false;                       // Engine not firing
     fire_toggle = false;
-    start_delay_time = 0;
     end_delay_time = 0;
 }
 
 
 void MoonLanderScene::update(unsigned long deltaTime_ms) {
     if (!started) {
-        // Start game on button press
-        if (engine.getInputManager().isButtonPressed()) {
+        // Start game on button click
+        if (engine.getInputManager().isButtonClicked()) {
             started = true;
         }
         return;
     }
 
-    if (start_delay_time < 500) {
-        // Wait 1/2 second after start press to go.
-        // Don't burn fuel due to button start press
-        // TODO: Could also wait for button click to complete before starting.
-        start_delay_time += deltaTime_ms;
-        return;
-    }
-
     if (done) {
         if (end_delay_time < 500) {
-            // Wait 1/2 second after completion before we acccept a button press.
+            // Wait 1/2 second after completion before we acccept a button click.
             end_delay_time += deltaTime_ms;
             return;
         }
-        if (engine.getInputManager().isButtonPressed()) {
-            // Go back to ready state on button press.
+        if (engine.getInputManager().isButtonClicked()) {
+            // Go back to ready state on button click.
             init();
         }
         return;

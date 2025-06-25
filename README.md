@@ -99,7 +99,7 @@ EDGE/
 ### Library Dependencies
 Ensure you have the following libraries installed:
 ```sh
-pio lib install "U8g2" "ArduinoQueue" "SafeString" "OneButton"
+pio lib install "U8g2" "ArduinoQueue"
 ```
 
 ### Include EDGE in Your Project

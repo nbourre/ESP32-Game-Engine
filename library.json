@@ -15,8 +15,7 @@
     "dependencies": {
       "U8g2": "*",
       "ArduinoQueue": "*",
-      "SafeString": "*",
-      "OneButton": "*"
+      "SafeString": "*"
     },
     "frameworks": ["arduino"],
     "platforms": ["espressif32"],

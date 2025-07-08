@@ -40,6 +40,7 @@ public:
     void draw(Renderer& rendererRef); 
     Scene* getCurrentScene() const;
     String getCurrentSceneName() const;
+    SceneType getPreviousSceneType() const; // <<< NEW
 
     SceneFactoryFunction getFactoryByName(const String& name) const;
     std::vector<String> getRegisteredSceneNames() const;
@@ -55,6 +56,7 @@ private:
     Scene* sceneStack[MAX_SCENES] = {nullptr};
     int sceneCount = 0;
     String _sceneNameStack[MAX_SCENES]; 
+    SceneType _previousSceneType = SceneType::UNKNOWN; // <<< NEW
 
     InputManager* inputManager = nullptr;
     EDGELogger _logger;

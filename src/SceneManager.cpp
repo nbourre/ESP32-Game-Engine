@@ -25,6 +25,7 @@ bool SceneManager::isSceneChangePending() const { return _pendingSceneChange; }
 String SceneManager::getPendingSceneName() const { return _pendingNextSceneName; }
 void* SceneManager::getPendingConfigData() const { return _pendingConfigData; }
 bool SceneManager::getPendingReplaceStack() const { return _pendingReplaceStack; }
+SceneType SceneManager::getPreviousSceneType() const { return _previousSceneType; }
 // --- END NEW GETTER IMPLEMENTATIONS ---
 
 void SceneManager::processSceneChanges() {
@@ -152,6 +153,12 @@ bool SceneManager::setCurrentScene(const String& sceneName, void* configData) {
     }
     if (_logger) { char buf[128]; snprintf(buf, sizeof(buf), "[SCENEMANAGER] Setting current scene to '%s'", sceneName.c_str()); _logger(buf); }
 
+    if (sceneCount > 0 && sceneStack[sceneCount - 1]) {
+        _previousSceneType = sceneStack[sceneCount - 1]->getSceneType();
+    } else {
+        _previousSceneType = SceneType::UNKNOWN;
+    }
+
     clearStack(); 
 
     Scene* newScene = createSceneByName(sceneName, configData); 
@@ -180,7 +187,10 @@ bool SceneManager::pushScene(const String& sceneName, void* configData) {
      if (_logger) { char buf[128]; snprintf(buf, sizeof(buf), "[SCENEMANAGER] Pushing scene '%s'", sceneName.c_str()); _logger(buf); }
 
     if (sceneCount > 0 && sceneStack[sceneCount - 1]) {
+        _previousSceneType = sceneStack[sceneCount - 1]->getSceneType();
         sceneStack[sceneCount - 1]->onExit();
+    } else {
+        _previousSceneType = SceneType::UNKNOWN;
     }
 
     Scene* newScene = createSceneByName(sceneName, configData); 
@@ -211,6 +221,7 @@ bool SceneManager::popScene() {
         if (_logger) { char buf[128]; snprintf(buf, sizeof(buf), "[SCENEMANAGER] Popping scene '%s'", removedSceneName.c_str()); _logger(buf); }
 
         if (removedScene) {
+            _previousSceneType = removedScene->getSceneType();
             removedScene->onExit();
             inputManager->unregisterAllListenersForScene(removedScene);
             inputManager->clearDeferredActionsForScene(removedScene);
@@ -226,6 +237,7 @@ bool SceneManager::popScene() {
         return true;
     } else { 
         if (_logger) _logger("[SCENEMANAGER] Attempted to pop from an empty scene stack.");
+        _previousSceneType = SceneType::UNKNOWN;
         return false; 
     }
 }

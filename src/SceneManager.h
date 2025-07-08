@@ -4,13 +4,13 @@
 #include <map>
 #include <vector>
 #include <functional> 
+#include "Scene.h" 
 
 #define MAX_SCENES 5
 
 // Forward declarations
 class InputManager;
 class Renderer;
-class Scene; 
 
 // Define the logger type directly to break circular dependency with EDGE.h
 using EDGELogger = std::function<void(const char* message)>;
@@ -40,7 +40,7 @@ public:
     void draw(Renderer& rendererRef); 
     Scene* getCurrentScene() const;
     String getCurrentSceneName() const;
-    SceneType getPreviousSceneType() const; // <<< NEW
+    String getPreviousSceneName() const;
 
     SceneFactoryFunction getFactoryByName(const String& name) const;
     std::vector<String> getRegisteredSceneNames() const;
@@ -56,7 +56,7 @@ private:
     Scene* sceneStack[MAX_SCENES] = {nullptr};
     int sceneCount = 0;
     String _sceneNameStack[MAX_SCENES]; 
-    SceneType _previousSceneType = SceneType::UNKNOWN; // <<< NEW
+    String _previousSceneName = "";
 
     InputManager* inputManager = nullptr;
     EDGELogger _logger;

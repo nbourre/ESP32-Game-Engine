@@ -42,16 +42,17 @@ void InputManager::processQueuedKeys() {
         }
 
         Scene* currentScene = sceneManager->getCurrentScene();
+        String currentSceneName = sceneManager->getCurrentSceneName();
         if (!currentScene) {
             if (_logger) _logger("[HARDWARE_INPUT] InputManager Warning: No active scene to process queued key.");
             return;
         }
         
         if (currentScene->usesKeyQueue()) {
-            if (_logger) { char buf[128]; snprintf(buf, sizeof(buf), "[SCENES] InputManager: Forwarding key %d to scene %p (type %d) for processing", receivedKeyCode, (void*)currentScene, (int)currentScene->getSceneType()); _logger(buf); }
+            if (_logger) { char buf[128]; snprintf(buf, sizeof(buf), "[SCENES] InputManager: Forwarding key %d to scene %p (name: %s) for processing", receivedKeyCode, (void*)currentScene, currentSceneName); _logger(buf); }
             currentScene->processKeyPress(receivedKeyCode);
         } else {
-            if (_logger) { char buf[128]; snprintf(buf, sizeof(buf), "[SCENES] InputManager: Key %d received, but scene %p (type %d) does not use key queue.", receivedKeyCode, (void*)currentScene, (int)currentScene->getSceneType()); _logger(buf); }
+            if (_logger) { char buf[128]; snprintf(buf, sizeof(buf), "[SCENES] InputManager: Key %d received, but scene %p (name: %s) does not use key queue.", receivedKeyCode, (void*)currentScene, currentSceneName); _logger(buf); }
         }
     }
 }
@@ -107,11 +108,12 @@ void InputManager::processButtonEvent(EDGE_Button button, EDGE_Event eventType) 
     }
 
     Scene* currentScene = sceneManager->getCurrentScene();
+    String currentSceneName = sceneManager->getCurrentSceneName();
     if (!currentScene) {
         if (_logger) _logger("[HARDWARE_INPUT] InputManager Warning: No active scene to process event!");
         return; 
     }
-    if (_logger) { char buf[128]; snprintf(buf, sizeof(buf), "[HARDWARE_INPUT] InputManager: Current scene type: %d, usesKeyQueue: %s", (int)currentScene->getSceneType(), currentScene->usesKeyQueue() ? "true" : "false"); _logger(buf); }
+    if (_logger) { char buf[128]; snprintf(buf, sizeof(buf), "[HARDWARE_INPUT] InputManager: Current scene name: %s, usesKeyQueue: %s", currentSceneName, currentScene->usesKeyQueue() ? "true" : "false"); _logger(buf); }
 
     bool useKeyQueue = currentScene->usesKeyQueue();
 

@@ -25,7 +25,7 @@ bool SceneManager::isSceneChangePending() const { return _pendingSceneChange; }
 String SceneManager::getPendingSceneName() const { return _pendingNextSceneName; }
 void* SceneManager::getPendingConfigData() const { return _pendingConfigData; }
 bool SceneManager::getPendingReplaceStack() const { return _pendingReplaceStack; }
-SceneType SceneManager::getPreviousSceneType() const { return _previousSceneType; }
+String SceneManager::getPreviousSceneName() const { return _previousSceneName; }
 // --- END NEW GETTER IMPLEMENTATIONS ---
 
 void SceneManager::processSceneChanges() {
@@ -140,7 +140,7 @@ Scene* SceneManager::createSceneByName(const String& sceneName, void* configData
     }
 
     if (_logger) { char buf[128]; snprintf(buf, sizeof(buf), "[SCENEMANAGER] Factory created scene '%s' at %p, calling generic init...", sceneName.c_str(), newScene); _logger(buf); }
-    newScene->init(); 
+    // newScene->init(); // init() is now called by the factory function in Main.cpp
 
     return newScene;
 }
@@ -154,9 +154,9 @@ bool SceneManager::setCurrentScene(const String& sceneName, void* configData) {
     if (_logger) { char buf[128]; snprintf(buf, sizeof(buf), "[SCENEMANAGER] Setting current scene to '%s'", sceneName.c_str()); _logger(buf); }
 
     if (sceneCount > 0 && sceneStack[sceneCount - 1]) {
-        _previousSceneType = sceneStack[sceneCount - 1]->getSceneType();
+        _previousSceneName = _sceneNameStack[sceneCount - 1];
     } else {
-        _previousSceneType = SceneType::UNKNOWN;
+        _previousSceneName = "";
     }
 
     clearStack(); 
@@ -187,10 +187,10 @@ bool SceneManager::pushScene(const String& sceneName, void* configData) {
      if (_logger) { char buf[128]; snprintf(buf, sizeof(buf), "[SCENEMANAGER] Pushing scene '%s'", sceneName.c_str()); _logger(buf); }
 
     if (sceneCount > 0 && sceneStack[sceneCount - 1]) {
-        _previousSceneType = sceneStack[sceneCount - 1]->getSceneType();
+        _previousSceneName = _sceneNameStack[sceneCount - 1];
         sceneStack[sceneCount - 1]->onExit();
     } else {
-        _previousSceneType = SceneType::UNKNOWN;
+        _previousSceneName = "";
     }
 
     Scene* newScene = createSceneByName(sceneName, configData); 
@@ -221,7 +221,7 @@ bool SceneManager::popScene() {
         if (_logger) { char buf[128]; snprintf(buf, sizeof(buf), "[SCENEMANAGER] Popping scene '%s'", removedSceneName.c_str()); _logger(buf); }
 
         if (removedScene) {
-            _previousSceneType = removedScene->getSceneType();
+            _previousSceneName = removedSceneName;
             removedScene->onExit();
             inputManager->unregisterAllListenersForScene(removedScene);
             inputManager->clearDeferredActionsForScene(removedScene);
@@ -237,7 +237,7 @@ bool SceneManager::popScene() {
         return true;
     } else { 
         if (_logger) _logger("[SCENEMANAGER] Attempted to pop from an empty scene stack.");
-        _previousSceneType = SceneType::UNKNOWN;
+        _previousSceneName = "";
         return false; 
     }
 }

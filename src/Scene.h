@@ -13,22 +13,6 @@ class InputManager;
 
 class Entity;
 
-enum class SceneType {
-    UNKNOWN, 
-    BOOT,
-    MAIN,
-    STATS,
-    PARAMS,
-    ACTION,
-    SLEEPING,
-    PLAY_MENU,
-    FLAPPY_GAME,
-    LANGUAGE_SELECT_PREQUEL,
-    PREQUEL_STAGE_1,
-    PREQUEL_STAGE_2, 
-    PREQUEL_STAGE_3,
-    PREQUEL_STAGE_4          
-}; 
 
 class Scene {
 public:
@@ -43,7 +27,6 @@ public:
     bool doesManageOwnDrawing() const { return managesOwnDrawing; }
     virtual bool usesKeyQueue() const { return false; }
     virtual void processKeyPress(uint8_t keyCode) {}
-    virtual SceneType getSceneType() const { return SceneType::UNKNOWN; }
     
     virtual class DialogBox* getDialogBox() { return nullptr; }
 

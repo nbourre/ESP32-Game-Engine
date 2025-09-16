@@ -4,12 +4,12 @@ Write-Host "Copying ESP32 Game Engine to Arduino libraries..."
 $SRC = Get-Location
 
 # Detect if OneDrive path exists (Office PC)
-if (Test-Path "$env:OneDrive\Documents 1\Arduino\libraries\") {
-    $DEST = "$env:OneDrive\Documents 1\Arduino\libraries\ESP32 Game Engine"
+if (Test-Path "$env:USERPROFILE\Documents\Arduino\libraries\") {
+    $DEST = "$env:USERPROFILE\Documents\Arduino\libraries\ESP32 Game Engine"
 }
 # Otherwise, use default home path
 else {
-    $DEST = "$env:USERPROFILE\Documents\Arduino\libraries\ESP32 Game Engine"
+    $DEST = "$env:OneDrive\Documents 1\Arduino\libraries\ESP32 Game Engine"
 }
 
 Write-Host "Using destination path: $DEST"

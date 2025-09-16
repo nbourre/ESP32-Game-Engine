@@ -14,9 +14,7 @@
     "license": "MIT",
     "dependencies": {
       "U8g2": "*",
-      "ArduinoQueue": "*",
-      "SafeString": "*",
-      "OneButton": "*"
+      "ArduinoQueue": "*"
     },
     "frameworks": ["arduino"],
     "platforms": ["espressif32"],

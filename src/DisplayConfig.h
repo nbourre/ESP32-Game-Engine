@@ -47,6 +47,9 @@ struct DisplayConfig {
      */
 
 //this is probably super ugly sorry its a quick fix to my problems
+//put rot before clk data and cs because that was the order u8g2 wanted like for example:
+//U8G2_SSD1306_128X64_NONAME_1_4W_SW_SPI(rotation, clk, data, cs, dc [, reset])
+//its just what worked best in my testing i got a ton of draw errors if not
     DisplayConfig(DisplayType displayType, const u8g2_cb_t* rot, uint8_t clk, uint8_t data, uint8_t cs, uint8_t dc, uint8_t rst, uint16_t w, uint16_t h, bool hwI2C = true)
         : type(displayType), rotation(rot), clockPin(clk), dataPin(data), resetPin(rst), csPin(cs), dcPin(dc), width(w), height(h), useHardwareI2C(hwI2C) {
             

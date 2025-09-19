@@ -1,31 +1,20 @@
 #pragma once
 #include <Arduino.h>
 
-#define BUTTON_COUNT 5 // Define the number of buttons
-
-//thinking about making a function to define these in the .ino file
-//to make things easier cuz as is you have to come in here
-
-//Define pin numbers for up to 5 buttons
-#define BUTTON_PIN_1 4      //select
-#define BUTTON_PIN_2 16     //up
-#define BUTTON_PIN_3 17     //down
-#define BUTTON_PIN_4 5      //left
-#define BUTTON_PIN_5 23     //right
+#define BUTTON_PIN 9  // Adjust this for your hardware
 
 class InputManager {
 public:
     void init();
     void update(unsigned long dt);
-    bool isButtonPressed(uint8_t buttonIndex);   // True on press for specific button
-    bool isButtonReleased(uint8_t buttonIndex);  // True on release for specific button
-    bool isButtonClicked(uint8_t buttonIndex);   // True on press and release for specific button
-    bool isButtonDown(uint8_t buttonIndex);      // True while button is pressed for specific button
+    bool isButtonPressed();     // True on press
+    bool isButtonReleased();    // True on release
+    bool isButtonClicked();     // True on press and release 
+    bool isButtonDown();        // True while button is pressed
 
 private:
-    bool buttonState[BUTTON_COUNT];      // States of buttons (pressed or not)
-    bool stateChanged[BUTTON_COUNT];     // Track state change for each button
-    uint16_t waitTime[BUTTON_COUNT];     // Debounce time for each button
-    bool clickFlag[BUTTON_COUNT];        // Used for isButtonClicked function for each button
-    uint8_t buttonPins[BUTTON_COUNT];    // Array to store button pins
+    bool buttonState;
+    bool stateChanged;          // True if state changed in update
+    uint16_t waitTime;          // Time (ms) remaining before reading buttton
+    bool clickFlag;             // Used for isButtonClicked function
 };

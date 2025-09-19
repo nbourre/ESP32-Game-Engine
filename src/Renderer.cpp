@@ -1,6 +1,7 @@
 #include "Renderer.h"
 #include <SafeString.h>
 #include <stdarg.h>  // Required for variadic functions
+#include <SPI.h>
 
 Renderer::Renderer(const DisplayConfig& config) : config(config) {
     switch (config.type) {
@@ -15,7 +16,10 @@ Renderer::Renderer(const DisplayConfig& config) : config(config) {
         case SH1106:
             u8g2 = new U8G2_SH1106_128X64_NONAME_F_HW_I2C(config.rotation, U8X8_PIN_NONE, config.clockPin, config.dataPin);
             break;
-
+       //adds support for SSD1309 
+        case SSD1309:
+            u8g2 = new U8G2_SSD1309_128X64_NONAME2_F_4W_SW_SPI(config.rotation, config.clockPin, config.dataPin, config.csPin, config.dcPin, config.resetPin);
+            break;
         // Add your own display types here
     }
 

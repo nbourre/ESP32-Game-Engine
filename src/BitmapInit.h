@@ -2,9 +2,15 @@
 
 //if your tight on space and not using custom images you can completly remove this file.
 //it is only refrenced once in EDGE.h at the very top
-//also this image can be completly removed its just here as an example
+//also these images can be completly removed they are just here as an example
 
-#define EDGE_Logo_width 128
+#define EDGE_Icon_width 64
+#define EDGE_Icon_height 64
+static unsigned char EDGE_Icon_bits[] = {
+  0xE8, 0x17, 0x24, 0x20, 0x22, 0x40, 0xE1, 0x87, 0x22, 0x40, 0x24, 0x20, 
+  0xE8, 0x17, };
+
+  #define EDGE_Logo_width 128
 #define EDGE_Logo_height 64
 static unsigned char EDGE_Logo_bits[] = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 

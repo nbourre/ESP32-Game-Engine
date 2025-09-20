@@ -32,9 +32,8 @@ Things can break at any update.
 
 
 ---
-<img width="4096" height="2048" alt="New Piskel (17)" src="https://github.com/user-attachments/assets/dc352f8a-3511-43f0-bb6e-8bc75d2875a6" />
 
-## The ESP Device Game Engine
+# The ESP Device Game Engine (EDGE)
 
 **EDGE** is a lightweight, **entity-based game engine** designed for **embedded devices** with **small displays**. It features **scene management**, **entity handling**, and is **hardware-agnostic**, working with **any U8g2-compatible display**.
 

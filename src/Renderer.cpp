@@ -15,7 +15,6 @@ Renderer::Renderer(const DisplayConfig& config) : config(config) {
         case SH1106:
             u8g2 = new U8G2_SH1106_128X64_NONAME_F_HW_I2C(config.rotation, U8X8_PIN_NONE, config.clockPin, config.dataPin);
             break;
-
         // Add your own display types here
     }
 
@@ -86,4 +85,10 @@ void Renderer::setFontSize(int size) {
         u8g2->setFont(u8g2_font_ncenB14_tr);
     }
 }
+
+//draw an image to the screen in an XBM format using the u8g2 lib (idk what u want me to say lol)
+void Renderer::drawXBM(int x, int y, int width, int height, const uint8_t *bitmap) {
+    u8g2->drawXBM(xOffset + x, yOffset + y, width, height, bitmap);
+}
+
 

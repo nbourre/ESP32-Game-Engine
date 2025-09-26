@@ -3,6 +3,8 @@
 //if your tight on space and not using custom images you can completly remove this file.
 //it is only refrenced once in EDGE.h at the very top
 //also these images can be completly removed they are just here as an example
+//you can also put this file in your projects folder and it will still work. 
+//this is nice when you have multiple projects that use the EDGE lib.
 
 #define EDGE_Icon_width 64
 #define EDGE_Icon_height 64

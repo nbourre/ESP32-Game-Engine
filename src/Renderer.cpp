@@ -18,9 +18,12 @@ Renderer::Renderer(const DisplayConfig& config) : config(config) {
             break;
        //adds support for SSD1309 
         case SSD1309:
-            u8g2 = new U8G2_SSD1309_128X64_NONAME2_F_4W_SW_SPI(config.rotation, config.clockPin, config.dataPin, config.csPin, config.dcPin, config.resetPin);
+            if (config.useHardwareI2C) {
+                u8g2 = new U8G2_SSD1309_128X64_NONAME2_F_4W_SW_SPI(config.rotation, config.clockPin, config.dataPin, config.csPin, config.dcPin, config.resetPin);
+            } else {
+                u8g2 = new U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI(config.rotation, config.csPin, config.dcPin, config.resetPin);
+            }
             break;
-        // Add your own display types here
     }
 
     xOffset = config.xOffset;

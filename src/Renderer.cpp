@@ -24,6 +24,7 @@ Renderer::Renderer(const DisplayConfig& config) : config(config) {
                 u8g2 = new U8G2_SSD1309_128X64_NONAME2_F_4W_HW_SPI(config.rotation, config.csPin, config.dcPin, config.resetPin);
             }
             break;
+        // Add your own display types here
     }
 
     xOffset = config.xOffset;
@@ -93,4 +94,10 @@ void Renderer::setFontSize(int size) {
         u8g2->setFont(u8g2_font_ncenB14_tr);
     }
 }
+
+//draw an image to the screen in an XBM format using the u8g2 lib (idk what u want me to say lol)
+void Renderer::drawXBM(int x, int y, int width, int height, const uint8_t *bitmap) {
+    u8g2->drawXBM(xOffset + x, yOffset + y, width, height, bitmap);
+}
+
 

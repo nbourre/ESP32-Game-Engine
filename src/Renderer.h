@@ -24,6 +24,8 @@ public:
     void drawLine(int x1, int y1, int x2, int y2);
     void drawXBM(int x, int y, int width, int height, const uint8_t *bitmap);
 
+
+
     void setDisplaySize(int w, int h) {
         width = w;
         height = h;
@@ -43,6 +45,7 @@ public:
 
     int getXOffset() const { return xOffset; }
     int getYOffset() const { return yOffset; }
+
 
 
 

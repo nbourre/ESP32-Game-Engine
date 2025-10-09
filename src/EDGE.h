@@ -3,6 +3,12 @@
 #include "Renderer.h"
 #include "InputManager.h"
 #include "DisplayConfig.h"
+//these two dont need anything to happen to them
+//they are here so you can reference them from anywhere
+//they just need to be refrenced by the engine to be "initialized"
+#include "FontInit.h"
+#include "BitmapInit.h"
+
 
 
 class EDGE {
@@ -27,6 +33,7 @@ private:
     SceneManager sceneManager;
     Renderer renderer;
     InputManager inputManager;
+
     unsigned long previousMillis;
     unsigned long deltaTime;
 };

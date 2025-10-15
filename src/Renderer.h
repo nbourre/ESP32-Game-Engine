@@ -31,6 +31,9 @@ public:
         height = h;
     }
 
+    int getWidth() const { return width; }
+    int getHeight() const { return height; }
+
     void setDisplayOffset(int x, int y) {
         xOffset = x;
         yOffset = y;

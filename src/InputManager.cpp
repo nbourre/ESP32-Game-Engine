@@ -1,15 +1,21 @@
 #include "InputManager.h"
+#include "InputConfig.h"
 
-void InputManager::init() {
+InputManager::InputManager(const InputConfig& config) : config(config) {}
+
+void InputManager::init(){
+    if (config.count <= 0) return;
+
     // Initialize button pins
-    buttonPins[0] = BUTTON_PIN_1;
-    buttonPins[1] = BUTTON_PIN_2;
-    buttonPins[2] = BUTTON_PIN_3;
-    buttonPins[3] = BUTTON_PIN_4;
-    buttonPins[4] = BUTTON_PIN_5;
+    buttonPins = new uint8_t[config.count];
+    buttonState = new bool[config.count];
+    stateChanged = new bool[config.count];
+    waitTime = new uint16_t[config.count];
+    clickFlag = new bool[config.count];
     
     // Set all pins as INPUT_PULLUP
-    for (int i = 0; i < BUTTON_COUNT; i++) {
+    for (int i = 0; i < config.count; i++) {
+        buttonPins[i] = config.inputPins[i];
         pinMode(buttonPins[i], INPUT_PULLUP);
         buttonState[i] = false;
         stateChanged[i] = false;
@@ -19,7 +25,9 @@ void InputManager::init() {
 }
 
 void InputManager::update(unsigned long dt) {
-    for (int i = 0; i < BUTTON_COUNT; i++) {
+    if (config.count <= 0) return;
+
+    for (int i = 0; i < config.count; i++) {
         // Check if in debounce time window for each button
         if (waitTime[i] >= dt) {
             waitTime[i] -= dt;
@@ -42,31 +50,28 @@ void InputManager::update(unsigned long dt) {
 
 //has the button been pressed
 bool InputManager::isButtonPressed(uint8_t buttonIndex) {
-    if (buttonIndex >= BUTTON_COUNT) {
-        return false;
-    }
+    if (buttonIndex >= config.count) return false;
+    
     return buttonState[buttonIndex] && stateChanged[buttonIndex];
 }
 
 //has the button been released
 bool InputManager::isButtonReleased(uint8_t buttonIndex) {
-    if (buttonIndex >= BUTTON_COUNT) { 
-        return false;
-    }
+    if (buttonIndex >= config.count) return false;
+
     return !buttonState[buttonIndex] && stateChanged[buttonIndex];
 }
 
 //is the button currently being held
 bool InputManager::isButtonDown(uint8_t buttonIndex) {
-    if (buttonIndex >= BUTTON_COUNT) {
-         return false;
-    }
+    if (buttonIndex >= config.count) return false;
+
     return buttonState[buttonIndex];
 }
 
 //has the button been pressed and released
 bool InputManager::isButtonClicked(uint8_t buttonIndex) {
-    if (buttonIndex >= BUTTON_COUNT) return false;
+    if (buttonIndex >= config.count) return false;
 
     // Function to look for press and release
     if (clickFlag[buttonIndex] && isButtonReleased(buttonIndex)) {

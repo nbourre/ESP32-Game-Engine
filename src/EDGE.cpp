@@ -1,6 +1,12 @@
 #include "EDGE.h"
+#include "InputConfig.h"
 
-EDGE::EDGE(const DisplayConfig& config) : renderer(config) {
+EDGE::EDGE(const DisplayConfig& displayConfig, const InputConfig& inputConfig) : renderer(displayConfig), inputManager(inputConfig) {
+    previousMillis = 0;
+    deltaTime = 0;
+}
+
+EDGE::EDGE(const DisplayConfig& displayConfig) : renderer(displayConfig), inputManager(InputConfig(0)) {
     previousMillis = 0;
     deltaTime = 0;
 }

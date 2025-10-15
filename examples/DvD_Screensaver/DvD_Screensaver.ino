@@ -1,22 +1,15 @@
 #include "Arduino.h"
 #include "EDGE.h"
-
-
-
-
 #include "BouncingBallScene.h"
 
-#define SCK_PIN    18  // Custom SCK (clock) pin
-#define MOSI_PIN   19 // Custom MOSI (data out) pin
-#define CS_PIN     25  // Chip select pin
-#define DC_PIN     27  // Data/Command pin
-#define RST_PIN    26  // Reset pin
+#define I2C_SDA SDA
+#define I2C_SCL SCL
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
 
 // Examples ESP32-C3 with OLED Display
-DisplayConfig config(SSD1309, U8G2_R0, SCK_PIN, MOSI_PIN, CS_PIN, DC_PIN, RST_PIN, SCREEN_WIDTH, SCREEN_HEIGHT, false);
+DisplayConfig config(SSD1306, U8G2_R0, I2C_SCL, I2C_SDA, U8X8_PIN_NONE, U8X8_PIN_NONE, U8X8_PIN_NONE, SCREEN_WIDTH, SCREEN_HEIGHT, true);
 
 EDGE engine(config);
 BouncingBallScene bouncingScene;

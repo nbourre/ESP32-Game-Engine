@@ -12,10 +12,6 @@
 
 #include "Scene.h"
 
-// Size of area drawn into by the scene.
-#define SCREEN_WIDTH 120
-#define SCREEN_HEIGHT 60
-
 class MoonLanderScene : public Scene {
 public:
     void init() override;
@@ -31,6 +27,8 @@ private:
     bool success;           // landed ok?
     bool fire;              // engines firing
     bool fire_toggle;       // animate engine
+    int screenWidth, screenHeight;
+    float pixels_per_m;     // pixels per meter
 
     // Delay start after button is pushed.
     uint16_t start_delay_time;

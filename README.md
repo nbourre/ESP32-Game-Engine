@@ -241,14 +241,15 @@ Renderer::Renderer(const DisplayConfig& config) : config(config) {
 ### Example Projects
 - **Bouncing Ball** (Basic physics test)
 - **Flappy Bird** (Button-controlled physics)
-
+- **DVD SCREENSAVER** (Image support test)
+- **Moonlander** (More complex game)
 ---
 
 ## Customization Guide
-- **Different Screens?** Modify `DisplayConfig` for your screen dimensions.
-- **Different Controls?** Customize `InputManager.cpp`.
-- **New Scenes?** Extend `Scene` and implement `update()` and `draw()`.
-
+- **Different Screens?**    Modify `DisplayConfig` for your screen dimensions.
+- **Different Controls?**    Customize `InputManager.cpp`.
+- **New Scenes?**    Extend `Scene` and implement `update()` and `draw()`.
+- **Custom Images?**    Convert your image to a `.XBM` file and place it in `BitmapInit.h` as a `static unsigned char` then call `.drawXBM` in your scene
 ---
 
 ## Contributing
@@ -265,6 +266,12 @@ EDGE is **open-source** under the **MIT License**.
 
 ## Credits
 Developed by **Nicolas Bourré** as a modular **game engine for embedded systems**.
+
+---
+
+## Contributers
+Jmwanderer for work on input support and general usability
+SLDTyp0 for custom image support and work on input support
 
 ---
 

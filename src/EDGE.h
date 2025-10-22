@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "InputManager.h"
+#include "InputConfig.h"
 #include "DisplayConfig.h"
 //these two dont need anything to happen to them
 //they are here so you can reference them from anywhere
@@ -13,7 +14,8 @@
 
 class EDGE {
 public:
-    EDGE(const DisplayConfig& config);
+    EDGE(const DisplayConfig& displayConfig, const InputConfig& inputConfig);
+    EDGE(const DisplayConfig& displayConfig);
     ~EDGE();
 
     void init();

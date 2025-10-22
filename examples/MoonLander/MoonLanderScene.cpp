@@ -12,10 +12,11 @@ const float gravity_force = 1.62;        // force in m/s^2
 const float rocket_force = -2.5;         // force in m/s^2
 const int screen_height_m = 100;         // displayed area in meters 
 const float fuel_burn_sec = 1000;        // kg/s fuel burn
-const float pixels_per_m = ((float) SCREEN_HEIGHT - 2) / screen_height_m;
 extern EDGE engine;
 
 void MoonLanderScene::init() {
+    screenHeight = engine.getRenderer().getHeight();
+    screenWidth = engine.getRenderer().getWidth();
     elevation = screen_height_m - 12;   // start near top of screen
     velocity = 0.0;                     // initial velocity is zero
     fuel = 5000;                        // kg fuel starting
@@ -25,13 +26,14 @@ void MoonLanderScene::init() {
     fire = false;                       // Engine not firing
     fire_toggle = false;
     end_delay_time = 0;
+    pixels_per_m = ((float) screenHeight - 2) / screen_height_m;
 }
 
 
 void MoonLanderScene::update(unsigned long deltaTime_ms) {
     if (!started) {
         // Start game on button click
-        if (engine.getInputManager().isButtonClicked()) {
+        if (engine.getInputManager().isButtonClicked(0)) {
             started = true;
         }
         return;
@@ -43,7 +45,7 @@ void MoonLanderScene::update(unsigned long deltaTime_ms) {
             end_delay_time += deltaTime_ms;
             return;
         }
-        if (engine.getInputManager().isButtonClicked()) {
+        if (engine.getInputManager().isButtonClicked(0)) {
             // Go back to ready state on button click.
             init();
         }
@@ -51,7 +53,7 @@ void MoonLanderScene::update(unsigned long deltaTime_ms) {
     }
 
     // Check if engine is currently firing
-    if (engine.getInputManager().isButtonDown()) {
+    if (engine.getInputManager().isButtonDown(0)) {
         if (fuel > 0) {
             velocity += (rocket_force * deltaTime_ms / 1000);
             fire = true;
@@ -120,16 +122,16 @@ void MoonLanderScene::draw(Renderer& renderer) {
     renderer.drawTextSafe(40, 22, "elev: %.2f m", elevation);
     renderer.drawTextSafe(40, 32, " vel: %.2f m/s", velocity);
     renderer.drawTextSafe(40, 42, "fuel: %.0f kg", fuel);
-    renderer.drawLine(0, SCREEN_HEIGHT - 1, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
+    renderer.drawLine(0, screenHeight - 1, screenWidth - 1, screenHeight - 1);
 
     // Draw game status if not running.
     if (!started) {
-        renderer.drawText(30, 5, "READY");
+        renderer.drawText(30, 10, "READY");
     } else if (done) {
         if (success) {
-            renderer.drawText(30, 5, "LANDED!");
+            renderer.drawText(30, 10, "LANDED!");
         } else {
-            renderer.drawText(30, 5, "CRASHED!");
+            renderer.drawText(30, 10, "CRASHED!");
         }
     }
 }

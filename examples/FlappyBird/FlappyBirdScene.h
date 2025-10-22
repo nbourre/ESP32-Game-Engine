@@ -14,6 +14,7 @@ private:
     bool gameOver;
     int pipeX, pipeGapY;
     int score;
+    int screenWidth, screenHeight;
     
     void resetGame();
 };

@@ -8,9 +8,10 @@
 #define SCREEN_HEIGHT 40
 
 // Examples ESP32-C3 with OLED Display
-DisplayConfig config(SSD1306, I2C_SCL, I2C_SDA, U8X8_PIN_NONE, U8G2_R0, SCREEN_WIDTH, SCREEN_HEIGHT, true);
+DisplayConfig config(SSD1306, U8G2_R0, I2C_SCL, I2C_SDA, U8X8_PIN_NONE, U8X8_PIN_NONE, U8X8_PIN_NONE, SCREEN_WIDTH, SCREEN_HEIGHT, true);
+InputConfig inputConfig(1, 0); // One button connected to pin 0
 
-EDGE engine(config);
+EDGE engine(config, inputConfig);
 FlappyBirdScene scene;
 
 unsigned long currentTime = 0;

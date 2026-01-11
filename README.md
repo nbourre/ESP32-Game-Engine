@@ -45,7 +45,7 @@ https://github.com/user-attachments/assets/466554af-29f4-4d50-976b-3db33ba87524
 
 ## Features
 - **Entity-based architecture** for modular game objects.
-- **Colission System** to handle interactions between entities in a centralized way.
+- **Collision System** to handle interactions between entities in a centralized way.
 - **Scene management** to handle game flow.
 - **Customizable renderer & input system** (supporting different devices).
 - **Optimized for embedded systems** (memory-efficient, no heap fragmentation).

@@ -8,7 +8,7 @@ void Scene::update(unsigned long deltaTime) {
         entities.enqueue(entity);  // Re-add entity to maintain order
     }
 
-    //  update collision system after remoeving all entities
+    //  update collision system after removing all entities
     collisionSystem.update();
 }
 

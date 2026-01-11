@@ -18,5 +18,5 @@ public:
 
     Rect getHitBox() override { return {x-radius, y-radius, radius*2, radius*2}; }
 
-    void onCollision(Entity* other);
+    void onCollision(Entity* other) override;
 };

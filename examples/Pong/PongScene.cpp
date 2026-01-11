@@ -39,7 +39,7 @@ void PongScene::update(unsigned long deltaTime) {
         ball->update(deltaTime);
 
         // --- Collisions between entities ---
-        collisionSystem.update();
+        // Collision handling is performed by the base Scene::update
 
         // --- Check if ball is out of bounds ---
         if (ball->x < 0) {       // left side

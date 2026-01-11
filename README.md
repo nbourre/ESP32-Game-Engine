@@ -70,7 +70,7 @@ EDGE is built around **scenes** and **entities**:
 
 EDGE now includes a **Collision System** to handle interactions between entities in a centralized way. This keeps collision logic clean and modular.
 
-- Each **Entity** can have a **HitBox** (rectangle or circle) defining its collision area.
+- Each **Entity** can have a **rectangular HitBox** defining its collision area.
 - The **CollisionSystem** is responsible for:
   - Registering entities that participate in collisions.
   - Checking intersections between all registered entities.

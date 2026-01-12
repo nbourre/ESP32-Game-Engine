@@ -12,6 +12,7 @@ Things can break at any update.
     - [Scenes](#scenes)
     - [Entities](#entities)
     - [Renderer \& DisplayConfig](#renderer--displayconfig)
+    - [Collision System](#collision-system)
   - [Project Structure](#project-structure)
   - [Setup \& Installation](#setup--installation)
     - [Hardware Requirements](#hardware-requirements)
@@ -44,6 +45,7 @@ https://github.com/user-attachments/assets/466554af-29f4-4d50-976b-3db33ba87524
 
 ## Features
 - **Entity-based architecture** for modular game objects.
+- **Collision System** to handle interactions between entities in a centralized way.
 - **Scene management** to handle game flow.
 - **Customizable renderer & input system** (supporting different devices).
 - **Optimized for embedded systems** (memory-efficient, no heap fragmentation).
@@ -63,6 +65,19 @@ EDGE is built around **scenes** and **entities**:
 ### Entities
 - Each **entity** is an object in the game (player, enemy, particle, etc.).
 - Entities **update every frame** and **draw themselves**.
+
+### Collision System
+
+EDGE now includes a **Collision System** to handle interactions between entities in a centralized way. This keeps collision logic clean and modular.
+
+- Each **Entity** can have a **rectangular HitBox** defining its collision area.
+- The **CollisionSystem** is responsible for:
+  - Registering entities that participate in collisions.
+  - Checking intersections between all registered entities.
+  - Calling the `onCollision(Entity* other)` method on each colliding entity.
+
+Collision System Sample Implementation: `/examples/Pong`
+
 
 ### Renderer & DisplayConfig
 - The **Renderer** handles all drawing operations with `U8g2`.

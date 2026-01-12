@@ -12,9 +12,9 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug",
-            "executable": "D:/_data/projets/embedded/ESP32 Game Engine/.pio/build/dfrobot_beetle_esp32c3/firmware.elf",
+            "executable": "c:/Users/gperez88/Documents/ESP32-Game-Engine/.pio/build/dfrobot_beetle_esp32c3/firmware.elf",
             "projectEnvName": "dfrobot_beetle_esp32c3",
-            "toolchainBinDir": "C:/Users/nicol/.platformio/packages/toolchain-riscv32-esp/bin",
+            "toolchainBinDir": "C:/Users/gperez88/.platformio/packages/toolchain-riscv32-esp/bin",
             "internalConsoleOptions": "openOnSessionStart",
             "preLaunchTask": {
                 "type": "PlatformIO",
@@ -25,18 +25,18 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug (skip Pre-Debug)",
-            "executable": "D:/_data/projets/embedded/ESP32 Game Engine/.pio/build/dfrobot_beetle_esp32c3/firmware.elf",
+            "executable": "c:/Users/gperez88/Documents/ESP32-Game-Engine/.pio/build/dfrobot_beetle_esp32c3/firmware.elf",
             "projectEnvName": "dfrobot_beetle_esp32c3",
-            "toolchainBinDir": "C:/Users/nicol/.platformio/packages/toolchain-riscv32-esp/bin",
+            "toolchainBinDir": "C:/Users/gperez88/.platformio/packages/toolchain-riscv32-esp/bin",
             "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug (without uploading)",
-            "executable": "D:/_data/projets/embedded/ESP32 Game Engine/.pio/build/dfrobot_beetle_esp32c3/firmware.elf",
+            "executable": "c:/Users/gperez88/Documents/ESP32-Game-Engine/.pio/build/dfrobot_beetle_esp32c3/firmware.elf",
             "projectEnvName": "dfrobot_beetle_esp32c3",
-            "toolchainBinDir": "C:/Users/nicol/.platformio/packages/toolchain-riscv32-esp/bin",
+            "toolchainBinDir": "C:/Users/gperez88/.platformio/packages/toolchain-riscv32-esp/bin",
             "internalConsoleOptions": "openOnSessionStart",
             "loadMode": "manual"
         }

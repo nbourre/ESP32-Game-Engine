@@ -1,5 +1,6 @@
 #pragma once
 #include <ArduinoQueue.h>
+#include "CollisionSystem.h"
 #include "Entity.h"
 
 #define MAX_ENTITIES 10  // Adjustable max entities per scene
@@ -17,4 +18,5 @@ public:
 
 protected:
     ArduinoQueue<Entity*> entities;  // Safe preallocated queue
+    CollisionSystem collisionSystem;
 };

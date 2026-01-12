@@ -7,6 +7,9 @@ void Scene::update(unsigned long deltaTime) {
         entity->update(deltaTime);
         entities.enqueue(entity);  // Re-add entity to maintain order
     }
+
+    //  update collision system after removing all entities
+    collisionSystem.update();
 }
 
 void Scene::draw(Renderer& renderer) {
@@ -20,6 +23,7 @@ void Scene::draw(Renderer& renderer) {
 
 void Scene::addEntity(Entity* entity) {
     entities.enqueue(entity);
+    collisionSystem.addEntity(entity); // sync with collision system
 }
 
 void Scene::removeEntity(Entity* entity) {
@@ -28,6 +32,8 @@ void Scene::removeEntity(Entity* entity) {
         Entity* e = entities.dequeue();
         if (e != entity) {
             tempQueue.enqueue(e);  // Keep all except the one to remove
+        } else {
+            collisionSystem.removeEntity(e); // sync with collision system
         }
     }
     entities = tempQueue;

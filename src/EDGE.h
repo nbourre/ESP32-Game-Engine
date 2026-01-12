@@ -26,6 +26,7 @@ public:
     
     // Scene management via SceneManager
     void setScene(Scene* newScene);
+    Scene* getCurrentScene() const { return sceneManager.getCurrentScene(); }
     
     void setRenderer(Renderer& newRenderer) { renderer = newRenderer; }
     Renderer& getRenderer();

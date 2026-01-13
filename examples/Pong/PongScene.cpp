@@ -33,13 +33,11 @@ void PongScene::update(unsigned long deltaTime) {
         if (engine.getInputManager().isButtonDown(0)) leftPaddle->velocity = -100.0f;
         if (engine.getInputManager().isButtonDown(1)) leftPaddle->velocity = 100.0f;
 
-        // --- Update actors ---
-        leftPaddle->update(deltaTime);
-        rightPaddle->update(deltaTime);
-        ball->update(deltaTime);
+        // --- Update all entities via base Scene ---
+        Scene::update(deltaTime);
 
         // --- Collisions between entities ---
-        collisionSystem.update();
+        // Collision handling is performed by the base Scene::update
 
         // --- Check if ball is out of bounds ---
         if (ball->x < 0) {       // left side

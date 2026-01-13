@@ -12,7 +12,7 @@ Things can break at any update.
     - [Scenes](#scenes)
     - [Entities](#entities)
     - [Renderer \& DisplayConfig](#renderer--displayconfig)
-    - [Collision System](#collision-system)
+    - [Collision System (Layer-Based)](#optimized-collision-system-layer-based)
   - [Project Structure](#project-structure)
   - [Setup \& Installation](#setup--installation)
     - [Hardware Requirements](#hardware-requirements)
@@ -66,18 +66,80 @@ EDGE is built around **scenes** and **entities**:
 - Each **entity** is an object in the game (player, enemy, particle, etc.).
 - Entities **update every frame** and **draw themselves**.
 
-### Collision System
+### Optimized Collision System (Layer-Based)
 
-EDGE now includes a **Collision System** to handle interactions between entities in a centralized way. This keeps collision logic clean and modular.
+EDGE features a decentralized collision system optimized for *ESP32* performance. It combines physical area definitions with Bitmask Filtering to skip unnecessary calculations, significantly saving CPU cycles.
 
-- Each **Entity** can have a **rectangular HitBox** defining its collision area.
-- The **CollisionSystem** is responsible for:
-  - Registering entities that participate in collisions.
-  - Checking intersections between all registered entities.
-  - Calling the `onCollision(Entity* other)` method on each colliding entity.
+1. Physical Definition (HitBox)
+
+Each *Actor* (Entity) has a defined collision area (HitBox). In this engine, actors like the Ball and Bricks use their position (`x`, `y`) and dimensions (`width`, `height` or `radius`) to define their intersection bounds.
+
+2. Filtering Logic: Layers & Masks
+
+While the HitBox defines the "where", Layers and Masks define the "who":
+- Collision Layer: Defines "who the entity is" (e.g., BALL, BRICK).
+- Collision Mask: Defines "who the entity collides with".
+
+The engine only checks for HitBox intersections if (`EntityA.mask` & `EntityB.layer`) is true.
+
+3. Layer Definition (`GameLayers.h`)
+
+Las capas se definen mediante potencias de 2 para permitir comparaciones ultrarrápidas a nivel de bit:
+
+```c++
+#include "CollisionTypes.h"
+
+namespace Layers {
+    const CollisionLayer BALL    = 1 << 0;
+    const CollisionLayer PADDLE  = 1 << 1;
+}
+```
+
+4. Implementation Pattern
+
+Logic is distributed within the entities, keeping scenes clean.
+
+- Setup: Define area, identity, and filter in the constructor.
+
+```c++
+// PaddleActor.h
+PaddleActor(float x, float y, int w, int h, bool ai = false)
+    : Actor(x, y, w, h), velocity(0), accumulator(0), isAI(ai) {
+    
+    this->setCollisionLayer(Layers::PADDLE);
+    this->setCollisionMask(Layers::BALL);
+}
+
+//BallActor.h
+BallActor(float x, float y, int radius, float speed)
+    : Actor(x, y, radius * 2.0f, radius * 2.0f), vx(0), vy(0), radius(radius), speed(speed), respawnTimer(0), active(false) {
+
+    this->setCollisionLayer(Layers::BALL);
+    this->setCollisionMask(Layers::PADDLE);
+}
+```
+
+- Event Handling: Override onCollision to define behavior.
+
+```c++
+void BallActor::onCollision(Actor* other) {
+    // The ball only interacts with PADDLE; if it interacts with another layer, use isInLayer 
+    vx = -vx;
+
+    if (vx > 0) {
+        x = other->x + other->width + radius;
+    } else {
+        x = other->x - radius;
+    }
+
+    float impactPos = (y - other->y) / other->height - 0.5f;
+    vy += impactPos * 50.0f;
+}
+```
 
 Collision System Sample Implementation: `/examples/Pong`
 
+---
 
 ### Renderer & DisplayConfig
 - The **Renderer** handles all drawing operations with `U8g2`.

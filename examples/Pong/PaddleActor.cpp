@@ -1,4 +1,4 @@
-#include "PaddleEntity.h"
+#include "PaddleActor.h"
 #include "PongScene.h"  
 #include "EDGE.h"
 #include <math.h>
@@ -11,7 +11,7 @@ extern EDGE engine;
 #define PONG_PLAY_AREA_TOP 0
 #define PONG_PLAY_AREA_BOTTOM engine.getRenderer().getHeight()
 
-void PaddleEntity::update(unsigned long deltaTime) {
+void PaddleActor::update(unsigned long deltaTime) {
     float dt = deltaTime / 1000.0f;
     
     if (isAI) {
@@ -56,10 +56,10 @@ void PaddleEntity::update(unsigned long deltaTime) {
     if (y + height > PONG_PLAY_AREA_BOTTOM) { y = PONG_PLAY_AREA_BOTTOM - height; accumulator = 0; }
 }
 
-void PaddleEntity::draw(Renderer& renderer) {
+void PaddleActor::draw(Renderer& renderer) {
     renderer.drawFilledRectangle((int)x, (int)y, width, height);
 }
 
-void PaddleEntity::onCollision(Entity* other) {
+void PaddleActor::onCollision(Actor* other) {
     // No special collision handling needed for paddles
 }

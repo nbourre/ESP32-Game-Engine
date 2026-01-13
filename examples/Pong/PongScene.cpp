@@ -12,9 +12,9 @@ void PongScene::init() {
     int screenWidth = engine.getRenderer().getWidth();
     int screenHeight = engine.getRenderer().getHeight();
 
-    leftPaddle = new PaddleEntity(0, screenHeight/2 - PADDLE_HEIGHT/2, PADDLE_WIDTH, PADDLE_HEIGHT, false);
-    rightPaddle = new PaddleEntity(screenWidth - PADDLE_WIDTH, screenHeight/2 - PADDLE_HEIGHT/2, PADDLE_WIDTH, PADDLE_HEIGHT, true);
-    ball = new BallEntity(screenWidth/2, screenHeight/2, BALL_RADIUS, BALL_SPEED);
+    leftPaddle = new PaddleActor(0, screenHeight/2 - PADDLE_HEIGHT/2, PADDLE_WIDTH, PADDLE_HEIGHT, false);
+    rightPaddle = new PaddleActor(screenWidth - PADDLE_WIDTH, screenHeight/2 - PADDLE_HEIGHT/2, PADDLE_WIDTH, PADDLE_HEIGHT, true);
+    ball = new BallActor(screenWidth/2, screenHeight/2, BALL_RADIUS, BALL_SPEED);
     ball->reset();
 
     addEntity(leftPaddle);

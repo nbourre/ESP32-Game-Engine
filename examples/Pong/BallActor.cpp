@@ -1,12 +1,11 @@
-#include "BallEntity.h"
-#include "PaddleEntity.h"
+#include "BallActor.h"
 #include "EDGE.h"
 #include <stdlib.h>
 #include <math.h>
 
 extern EDGE engine;
 
-void BallEntity::reset() {
+void BallActor::reset() {
     int screenWidth = engine.getRenderer().getWidth();
     int screenHeight = engine.getRenderer().getHeight();
 
@@ -19,7 +18,7 @@ void BallEntity::reset() {
     active = false;
 }
 
-void BallEntity::update(unsigned long deltaTime) {
+void BallActor::update(unsigned long deltaTime) {
     float dt = deltaTime / 1000.0f;
 
     if (!active) {
@@ -45,22 +44,20 @@ void BallEntity::update(unsigned long deltaTime) {
     if (y + radius > screenHeight) { y = screenHeight - radius; vy = -vy; }
 }
 
-void BallEntity::draw(Renderer& renderer) {
+void BallActor::draw(Renderer& renderer) {
     renderer.drawCircle((int)x, (int)y, radius);
 }
 
-void BallEntity::onCollision(Entity* other) {
-    PaddleEntity* paddle = dynamic_cast<PaddleEntity*>(other);
-    if (paddle) {
-        vx = -vx;
+void BallActor::onCollision(Actor* other) {
+    // The ball only interacts with PADDLE; if it interacts with another layer, use isInLayer 
+    vx = -vx;
 
-        if (vx > 0) {
-            x = paddle->x + paddle->width + radius;
-        } else {
-            x = paddle->x - radius;
-        }
-
-        float impactPos = (y - paddle->y) / paddle->height - 0.5f;
-        vy += impactPos * 50.0f;
+    if (vx > 0) {
+        x = other->x + other->width + radius;
+    } else {
+        x = other->x - radius;
     }
+
+    float impactPos = (y - other->y) / other->height - 0.5f;
+    vy += impactPos * 50.0f;
 }

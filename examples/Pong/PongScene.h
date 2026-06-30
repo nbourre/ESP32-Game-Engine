@@ -1,7 +1,7 @@
 #pragma once
 #include "Scene.h"
-#include "PaddleEntity.h"
-#include "BallEntity.h"
+#include "PaddleActor.h"
+#include "BallActor.h"
 
 class PongScene : public Scene {
 public:
@@ -13,9 +13,9 @@ public:
     float getBallY() { return ball->y; }
 
 private:
-    PaddleEntity* leftPaddle;
-    PaddleEntity* rightPaddle;
-    BallEntity* ball;
+    PaddleActor* leftPaddle;
+    PaddleActor* rightPaddle;
+    BallActor* ball;
 
     int leftScore, rightScore;
     bool gameOver;
